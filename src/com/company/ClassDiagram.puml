@@ -1,0 +1,128 @@
+@startuml
+abstract class AbstractTaskList implements Cloneable, Serializable {
+ void add(Task task)
+ boolean remove(Task task)
+ int size()
+ Task getTask(int index)
+ void setTask(int index, Task task)
+ Stream<Task> getStream()
+}
+
+class ArrayTaskList extends AbstractTaskList{
+Task[] array
+ int START_LENGTH = 10
+ ArrayTaskList()
+ void add(Task task)
+ boolean remove(Task task)
+ Task getTask(int index)
+ boolean equals(Object otherObject)
+ int hashCode()
+ String toString()
+ Object clone()
+ void setTask(int index, Task task)
+  Iterator<Task> iterator()
+
+}
+
+class LinkedTaskList extends AbstractTaskList{
+NodeTask first
+NodeTask last
+Task value
+NodeTask next
+LinkedTaskList()
+void add(Task task)
+boolean remove(Task task)
+Task getTask(int index)
+void setTask(int index, Task task)
+boolean equals(Object otherObject)
+int hashCode()
+String toString()
+Object clone()
+Iterator<Task> iterator()
+}
+
+class Task implements Cloneable, Serializable {
+String title
+LocalDateTime start
+LocalDateTime end
+int interval;
+boolean active;
+static final long serialVersionUID = 1
+Task(String title, LocalDateTime time)
+Task(String title, LocalDateTime start, LocalDateTime end, int interval)
+String getTitle()
+boolean isActive()
+void setActive(boolean active)
+LocalDateTime getTime()
+void setTime(LocalDateTime time)
+LocalDateTime getStartTime()
+LocalDateTime getEndTime()
+int getRepeatInterval()
+void setTime(LocalDateTime start, LocalDateTime end, int interval)
+boolean isRepeated()
+LocalDateTime nextTimeAfter(LocalDateTime current)
+boolean equals(Object otherObject)
+int hashCode()
+String toString()
+Object clone()
+String showTask()
+}
+
+class Tasks {
+static Iterable<Task> incoming(Iterable<Task> tasks, LocalDateTime start, LocalDateTime end)
+static SortedMap<LocalDateTime, Set<Task>> calendar(Iterable<Task> tasks, LocalDateTime start, LocalDateTime end)
+}
+
+class Main {
+AbstractTaskList taskList
+SortedMap<LocalDateTime, Set<Task>> calendar
+Main()
+void readTaskListFromRes()
+void writeTaskListFromRes()
+void main(String[] args)
+}
+
+class TaskIO {
+void write(AbstractTaskList tasks, OutputStream out)
+void read(AbstractTaskList tasks, InputStream in)
+void writeBinary(AbstractTaskList tasks, File file)
+void readBinary(AbstractTaskList tasks, File file)
+void write(AbstractTaskList tasks, Writer out)
+void read(AbstractTaskList tasks, Reader in)
+void writeText(AbstractTaskList tasks, File file)
+void readText(AbstractTaskList tasks, File file)
+}
+
+class TaskListFactory {
+AbstractTaskList createTaskList(ListTypes.types type)
+}
+
+class TaskManagerController {
+TaskManagerController(TaskManagerModel model)
+void menu()
+int answer
+boolean isWork = true
+boolean doAction(int action)
+void changeTaskAction()
+void removeTaskAction()
+void showTaskList()
+ void showCalendar()
+
+}
+
+class TaskManagerModel {
+TaskManagerModel()
+AbstractTaskList getTaskList()
+void setCalendar(SortedMap<LocalDateTime, Set<Task>> calendar)
+void readTaskListFromRes()
+void writeTaskListFromRes()
+Task createTask()
+void addToTaskList(Task task)
+void changeTask(int index)
+void removeTask(int index)
+}
+
+class ListTypes {
+   enum types ARRAY, LINKED
+    }
+@enduml
